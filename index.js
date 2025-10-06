@@ -1,7 +1,12 @@
 //Importacion de paquetes necesarios
+const connectDB = require('./config/db.js');
+const mongoose = require('mongoose');
 const express = require('express');
 const chalk = require('chalk');
 const path = require('path');
+
+//Conectar a la base de datos
+connectDB();
 
 const app = express();
 const port = 8080;

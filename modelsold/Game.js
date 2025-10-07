@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const Game = mongoose.model("Game", {
+const GameSchema = mongoose.Schema({
 	title: {tipe: String, required: true},
 	description: {type: String, required: true},
 	genre: [{type: String}],
@@ -15,7 +15,7 @@ const Game = mongoose.model("Game", {
 });
 
 //Recalcular el promedio de estrellas
-Game.prototype.updateAverageRating = async function(){
+GameSchema.prototype.updateAverageRating = async function(){
 	const Review = mongoose.model("Review");
 	const reviews = await Review.find({game: this._id});
 
@@ -30,5 +30,5 @@ Game.prototype.updateAverageRating = async function(){
 
 	await this.save();
 };
-
+const Game = mongoose.model('Game', GameSchema);
 module.exports = Game;

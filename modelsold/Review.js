@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const Review = mongoose.model("Review", {
+const ReviewSchema = mongoose.Schema({
 	user: {type: mongoose.Schema.Types.ObjectId, required: true},
 	game: {type: mongoose.Schema.Types.ObjectId, required: true},
 
@@ -13,4 +13,5 @@ const Review = mongoose.model("Review", {
 	createdAt: {type: Date, default: Date.now}
 });
 
+const Review = mongoose.model('Review', ReviewSchema);
 module.exports = Review;

@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
+require('./Game.js');
+require('./Review.js');
 
-const User = new mongose.model("User", {
+const UserSchema = new mongoose.Schema({
 	//Nombre de usuario, email y contrasenia
 	username: {type: String, required: true, unique: true},
 	email: {type: String, required: true, unique: true}, 
@@ -32,5 +34,7 @@ const User = new mongose.model("User", {
 	//Gamificacion
 	badges: [{type: String}]
 });
+
+const User = mongoose.model("User", UserSchema);
 
 module.exports = User;

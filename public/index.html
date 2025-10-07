@@ -1,5 +1,113 @@
 <!DOCTYPE html>
-<html>
-	<head></head>
-	<body><h1>Funciona</h1></body>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prueba de Reseñas</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #121212;
+      color: #eee;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      padding: 2rem;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      background: #1e1e1e;
+      padding: 1rem;
+      border-radius: 10px;
+      width: 300px;
+    }
+    input, textarea, select {
+      padding: 0.5rem;
+      border: none;
+      border-radius: 5px;
+    }
+    button {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 0.5rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Reseñas de Videojuegos</h1>
+
+  <!-- Crear usuario -->
+  <form id="form-user">
+    <h3>Crear usuario</h3>
+    <input type="text" id="username" placeholder="Nombre de usuario" required />
+    <input type="text" id="bio" placeholder="Mini bio" />
+    <button type="submit">Crear usuario</button>
+  </form>
+
+  <!-- Crear reseña -->
+  <form id="form-review">
+    <h3>Crear reseña</h3>
+    <input type="text" id="gameTitle" placeholder="Título del juego" required />
+    <input type="text" id="userId" placeholder="ID del usuario" required />
+    <input type="number" id="rating" min="1" max="5" placeholder="Estrellas (1-5)" required />
+    <textarea id="comment" placeholder="Comentario..." required></textarea>
+    <button type="submit">Publicar reseña</button>
+  </form>
+
+  <button id="loadReviews">Ver reseñas</button>
+
+  <div id="reviews"></div>
+
+  <script>
+    // Crear usuario
+    document.getElementById('form-user').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const username = document.getElementById('username').value;
+      const bio = document.getElementById('bio').value;
+
+      await fetch('/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, bio })
+      });
+      alert('Usuario creado!');
+    });
+
+    // Crear reseña
+    document.getElementById('form-review').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const title = document.getElementById('gameTitle').value;
+      const userId = document.getElementById('userId').value;
+      const rating = parseInt(document.getElementById('rating').value);
+      const comment = document.getElementById('comment').value;
+
+      await fetch('/reviews', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, userId, rating, comment })
+      });
+      alert('Reseña publicada!');
+    });
+
+    // Ver reseñas
+    document.getElementById('loadReviews').addEventListener('click', async () => {
+      const res = await fetch('/reviews');
+      const data = await res.json();
+      const div = document.getElementById('reviews');
+      div.innerHTML = '<h3>Lista de reseñas:</h3>' + data.map(r => `
+        <div>
+          <strong>${r.game?.title || 'Juego desconocido'}</strong><br>
+          ⭐ ${r.rating}/5<br>
+          "${r.comment}"<br>
+          <em>por ${r.user?.username || 'Anónimo'}</em>
+        </div><hr>`).join('');
+    });
+  </script>
+</body>
 </html>

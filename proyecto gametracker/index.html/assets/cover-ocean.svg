@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" role="img" aria-labelledby="title desc">
+  <title id="title">Ocean's Echo placeholder</title>
+  <desc id="desc">Stylized waves placeholder</desc>
+  <rect width="600" height="400" fill="#151821" />
+  <path d="M0 260 Q150 200 300 260 T600 260 V400 H0 Z" fill="#1b1f2a" />
+  <path d="M0 220 Q150 160 300 220 T600 220 V400 H0 Z" fill="#2a2f3a" opacity="0.7" />
+  <path d="M0 180 Q150 120 300 180 T600 180 V400 H0 Z" fill="#8a8f99" opacity="0.25" />
+  <text x="50%" y="85%" text-anchor="middle" fill="#e6e7eb" font-family="sans-serif" font-size="40">Ocean's Echo</text>
+</svg>

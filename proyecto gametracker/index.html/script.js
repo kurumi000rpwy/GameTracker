@@ -1,0 +1,1 @@
+// Este archivo puede ser eliminado ya que app.js contiene toda la funcionalidad necesaria

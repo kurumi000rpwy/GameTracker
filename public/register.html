@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crear Perfil</title>
+  <link rel="stylesheet" href="./assets/css/register.css">
+</head>
+<body>
+
+  <main class="container">
+    <section class="form-box">
+      <header>
+        <p class="tag">SPECTRA ID</p>
+        <h1>Crea tu perfil</h1>
+        <p class="subtitle">Desbloquea tus reseñas y progreso sincronizado.</p>
+      </header>
+
+      <form id="form">
+        <div class="field">
+          <label for="username">Nombre de usuario</label>
+          <input id="username" type="text" placeholder="Elige un alias">
+          <small class="error" id="userError"></small>
+        </div>
+
+        <div class="field">
+          <label for="email">Correo electrónico</label>
+          <input id="email" type="email" placeholder="nombre@ejemplo.com">
+          <small class="error" id="emailError"></small>
+        </div>
+
+        <div class="field">
+          <label for="password">Contraseña</label>
+          <div class="password-box">
+            <input id="password" type="password" placeholder="Mínimo 8 caracteres">
+            <button type="button" class="eye" id="togglePwd">👁️</button>
+          </div>
+          <small class="error" id="passError"></small>
+        </div>
+
+        <div class="field">
+          <label for="confirm">Confirmar contraseña</label>
+          <div class="password-box">
+            <input id="confirm" type="password" placeholder="Repite la contraseña">
+            <button type="button" class="eye" id="toggleConfirm">👁️</button>
+          </div>
+          <small class="error" id="confirmError"></small>
+        </div>
+
+        <div class="checkbox">
+          <input id="remember" type="checkbox">
+          <label for="remember">Recordarme en este equipo</label>
+        </div>
+
+        <div class="buttons">
+          <button type="button" id="clearBtn">Limpiar</button>
+          <button type="submit">Guardar</button>
+        </div>
+
+        <p class="msg" id="result"></p>
+      </form>
+
+      <footer>
+        <p>¿Ya tienes cuenta? <a href="#">Inicia sesión</a></p>
+      </footer>
+    </section>
+  </main>
+
+  <script src="./assets/js/register.js"></script>
+</body>
+</html>

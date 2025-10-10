@@ -1,0 +1,147 @@
+:root {
+  --bg: #0F1624;
+  --accent: #3b82f6;
+  --error: #ff6b6b;
+  --glass: linear-gradient(rgba(11, 87, 52, 0.7), rgba(31, 4, 20, 0.7));
+  --text: rgba(255,255,255,1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, sans-serif;
+  background: #06070D;
+	color: #fff;
+  min-height: 100vh;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+}
+.container {
+  	background: #0F1624;
+	align-items:center;
+  width: 100%;
+  padding: 20px;
+}
+.form-box {
+	align-items: center;
+  width: 100%;
+  max-width: 400px;
+  background: #0F1623;
+  padding: 25px;
+  border-radius: 10px;
+  backdrop-filter: blur(6px);
+}
+
+header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.tag {
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: rgba(255,255,255,0.6);
+}
+
+.field {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: #1F2A45;
+  color: #fff;
+}
+
+.password-box {
+  display: flex;
+  align-items: center;
+}
+
+.eye {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 10px 0;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button[type="submit"] {
+  background: #6F7BFF;
+  color: #fff;
+}
+
+button[type="button"] {
+  background: #06070D;
+  color: #fff;
+}
+
+.error {
+  font-size: 12px;
+  color: var(--error);
+  margin-top: 4px;
+}
+
+.msg {
+  text-align: center;
+  font-size: 13px;
+  margin-top: 10px;
+}
+
+footer {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 13px;
+}
+
+footer a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+@media (max-width: 480px) {
+  .form-box {
+    padding: 15px;
+  }
+}

@@ -60,7 +60,7 @@ form.addEventListener('submit', e => {
 
   if (!ok) return;
 
-  result.textContent = 'Formulario validado correctamente ✅';
+  form.submit();
 });
 
 // Botón limpiar

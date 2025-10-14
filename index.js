@@ -27,13 +27,26 @@ app.get("/register", (req, res) => {
 	res.sendFile(path.join(__dirname, 'public', 'register.html'));		
 }); 
 //Crear usuario
-app.post("/signup", async (req, res) => {
+app.post("/register", async (req, res) => {
 	try{
-		const newUser = new User(req.body);
-		await newUser.save();
-		res.send(`Se creo el usuario ${newUser.username}.`);
+		//Verificar si el usuario y email existen
+		const {username, email} = req.body;
+
+		usernameExist = await User.findOne({username});
+		emailExist = await User.findOne({email});
+		
+		if(usernameExist){
+			return res.send(`El nombre de usuario ${username} ya existe, por favor elige otro.`);
+		}if(emailExist){
+			return res.send(`El correo ${email} ya esta registrado, elige otro correo.`);
+		}else{
+			const newUser = new User(req.body);
+			await newUser.save();
+			res.send(`Se creo el usuario ${newUser.username}.`);
+		}
 	}catch(error){
 		res.send(error)
+		console.log(error)
 	}
 });
 

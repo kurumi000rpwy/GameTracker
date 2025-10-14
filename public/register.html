@@ -16,23 +16,23 @@
         <p class="subtitle">Desbloquea tus reseñas y progreso sincronizado.</p>
       </header>
 
-      <form id="form">
+      <form id="form" action="/register" method="POST">
         <div class="field">
           <label for="username">Nombre de usuario</label>
-          <input id="username" type="text" placeholder="Elige un alias">
+          <input id="username" name="username" type="text" placeholder="Elige un alias">
           <small class="error" id="userError"></small>
         </div>
 
         <div class="field">
           <label for="email">Correo electrónico</label>
-          <input id="email" type="email" placeholder="nombre@ejemplo.com">
+          <input id="email" name="email" type="email" placeholder="nombre@ejemplo.com">
           <small class="error" id="emailError"></small>
         </div>
 
         <div class="field">
           <label for="password">Contraseña</label>
           <div class="password-box">
-            <input id="password" type="password" placeholder="Mínimo 8 caracteres">
+            <input id="password" name="password" type="password" placeholder="Mínimo 8 caracteres">
             <button type="button" class="eye" id="togglePwd">👁️</button>
           </div>
           <small class="error" id="passError"></small>
@@ -59,7 +59,7 @@
 
         <p class="msg" id="result"></p>
       </form>
-
+	<p id="mensaje" style="color:red;"></p>
       <footer>
         <p>¿Ya tienes cuenta? <a href="#">Inicia sesión</a></p>
       </footer>

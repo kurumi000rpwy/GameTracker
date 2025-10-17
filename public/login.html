@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar Sesión</title>
+  <link rel="stylesheet" href="./assets/css/register.css">
+</head>
+<body>
+
+  <main class="container">
+    <section class="form-box">
+      <header>
+        <p class="tag">SPECTRA ID</p>
+        <h1>Inicia sesión</h1>
+        <p class="subtitle">Accede a tus reseñas y progreso sincronizado.</p>
+      </header>
+
+      <form id="loginForm" action="/login" method="POST">
+        <div class="field">
+          <label for="identifier">Usuario o correo electrónico</label>
+          <input id="identifier" name="identifier" type="text" placeholder="usuario o nombre@ejemplo.com">
+          <small class="error" id="identifierError"></small>
+        </div>
+
+        <div class="field">
+          <label for="password">Contraseña</label>
+          <div class="password-box">
+            <input id="password" name="password" type="password" placeholder="Tu contraseña">
+            <button type="button" class="eye" id="togglePwd">👁️</button>
+          </div>
+          <small class="error" id="passwordError"></small>
+        </div>
+
+        <div class="checkbox">
+          <input id="remember" name="remember" type="checkbox">
+          <label for="remember">Recordarme en este equipo</label>
+        </div>
+
+        <div class="buttons">
+          <button type="button" id="clearBtn">Limpiar</button>
+          <button type="submit">Ingresar</button>
+        </div>
+
+        <p class="msg" id="result"></p>
+      </form>
+
+      <footer>
+        <p>¿No tienes cuenta? <a href="/register">Crea una aquí</a></p>
+      </footer>
+    </section>
+  </main>
+
+  <script src="./assets/js/login.js"></script>
+</body>
+</html>

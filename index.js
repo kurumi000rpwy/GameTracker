@@ -106,6 +106,19 @@ app.post("/register", async (req, res) => {
 	}
 });
 
+//Ver los juegos
+app.get("/games", async (req, res) => {
+	res.sendFile(path.join(__dirname, "public", "games.html"));
+});
+
+//Listar juegos
+app.get("/api/games", async (req, res} => {
+	const page = parseInt(req.query.page) || 1;
+	const limit = 6;
+	const skip = (page - 1) * limit;
+});
+
+
 //Iniciar servidor
 app.listen(port, () => {
 	console.log(`${chalk.green('[ + ]')} Servidor corriendo en ${chalk.cyan(`http://localhost:${port}/`)}`);

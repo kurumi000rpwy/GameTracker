@@ -43,6 +43,7 @@ const GameSchema = new mongoose.Schema({
     title: { type: String, required: true },
     description: { type: String, required: true },
     genre: [{ type: String }],
+    img: {type: String, required: true},
     platform: [{ type: String }],
     releaseDate: { type: Date },
 

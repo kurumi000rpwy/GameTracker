@@ -18,7 +18,6 @@ const port = 8080;
 connectDB();
 
 app.use(express.json());
-app.use(xss());
 app.use(express.urlencoded({extended: true}));
 //Archivos de public (para que se vea la pagina)
 app.use(express.static(path.join(__dirname, 'public')));
@@ -41,13 +40,15 @@ app.get("/login", (req, res) => {
 //Ingresar
 app.post("/login", async (req, res) => {
 	try{
-		let {identifier, password} = xss(req.body);
+		let identifier = xss(req.body.identifier);
+		let password = xss(req.body.password);
 		
 		//Verificar si llego algo del js
 		if(!identifier || !password){
 			return res.json({success: false, messge: "Faltan campos"});
 		}
-
+		
+		//Ver si es email o username
 		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 		let query = {};
 		if(emailRegex.test(identifier)){
@@ -65,11 +66,11 @@ app.post("/login", async (req, res) => {
 		//Validar lacontrasenia
 		const validPassword = await bcrypt.compare(password, user.password);
 
-		if(validPassword){
+		if(!validPassword){
 			return res.json({success: false, message: "Contrasena incorrecta"});
 		}
 
-		res.send("Inicio de sesion completado")
+		res.send(`Bienvenido ${user}`);
 			
 
 	}catch(error){

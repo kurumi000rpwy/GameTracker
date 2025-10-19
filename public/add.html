@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Agregar Juego</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 2rem;
+    }
+
+    .container {
+      background: #222;
+      padding: 2rem;
+      border-radius: 1rem;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+    }
+
+    .field {
+      margin-bottom: 1.2rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-weight: bold;
+      margin-bottom: 0.3rem;
+    }
+
+    input, textarea, button {
+      padding: 0.5rem;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    .cards-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .card {
+      background: #333;
+      border-radius: 6px;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .card:hover {
+      background: #444;
+    }
+
+    .card.selected {
+      background: #6c63ff;
+      color: #fff;
+      box-shadow: 0 0 5px #6c63ff;
+    }
+
+    button {
+      background: #6c63ff;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: #5750d1;
+    }
+
+    h2 {
+      margin-top: 1rem;
+      font-size: 1.1rem;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1>Agregar un nuevo juego 🎮</h1>
+
+    <form id="addGameForm" action="/games/add" method="POST">
+      <div class="field">
+        <label for="title">Título</label>
+        <input type="text" id="title" name="title" required>
+      </div>
+
+      <div class="field">
+        <label for="description">Descripción</label>
+        <textarea id="description" name="description" minlength="16" maxlength="1000" required></textarea>
+      </div>
+
+      <!-- Géneros -->
+      <div class="field">
+        <label>Género(s)</label>
+        <div class="cards-container" id="genresContainer"></div>
+        <input type="hidden" id="genres" name="genre">
+      </div>
+
+      <!-- Plataformas -->
+      <div class="field">
+        <label>Plataforma(s)</label>
+        <div class="cards-container" id="platformContainer"></div>
+        <input type="hidden" id="platforms" name="platform">
+      </div>
+
+      <div class="field">
+        <label for="img">Imagen (URL)</label>
+        <input type="url" id="img" name="img" required>
+      </div>
+
+      <div class="field">
+        <label for="releaseDate">Fecha de lanzamiento</label>
+        <input type="date" id="releaseDate" name="releaseDate">
+      </div>
+
+      <button type="submit">Agregar juego</button>
+    </form>
+  </main>
+
+  <script>
+    const genres = [
+      "Acción", "Aventura", "Battle Royale", "Disparos", "Mundo abierto", "Rol", "Supervivencia",
+      "Deportes", "Carreras", "Estrategia", "Lucha", "Plataforma", "Terror", "Simulación",
+      "MOBA", "MMORPG", "Sandbox", "Puzzle", "Shooter táctico", "Casual"
+    ];
+
+    const platforms = [
+      "PC", "PlayStation 5", "PlayStation 4", "Xbox Series X / S",
+      "Nintendo Switch", "Android", "iOS", "Steam Deck"
+    ];
+
+    // --- FUNCIONES ---
+    function createSelectableCards(options, containerId, hiddenInputId) {
+      const container = document.getElementById(containerId);
+      const hiddenInput = document.getElementById(hiddenInputId);
+      const selected = new Set();
+
+      options.forEach(opt => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.textContent = opt;
+
+        card.onclick = () => {
+          if (selected.has(opt)) {
+            selected.delete(opt);
+            card.classList.remove("selected");
+          } else {
+            selected.add(opt);
+            card.classList.add("selected");
+          }
+          hiddenInput.value = Array.from(selected).join(",");
+        };
+
+        container.appendChild(card);
+      });
+    }
+
+    // Inicializar ambos grupos
+    createSelectableCards(genres, "genresContainer", "genres");
+    createSelectableCards(platforms, "platformContainer", "platforms");
+
+
+  </script>
+</body>
+</html>

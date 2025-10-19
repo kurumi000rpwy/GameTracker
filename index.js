@@ -112,10 +112,56 @@ app.get("/games", async (req, res) => {
 });
 
 //Listar juegos
-app.get("/api/games", async (req, res} => {
+app.get("/api/games", async (req, res) => {
 	const page = parseInt(req.query.page) || 1;
 	const limit = 6;
 	const skip = (page - 1) * limit;
+
+	const total = await Game.countDocuments();
+	const games = await Game.find().skip(skip).limit(limit);
+
+	if(total === 0){
+		return res.json({success: false, message: "No hay juegos"});
+	}
+
+	res.json({success: true, games, totalPages: Math.ceil(total / limit), page});
+});
+
+//pagina para agregar juegos
+app.get("/games/add", async (req, res) => {
+	res.sendFile(path.join(__dirname, "public", "add.html"));
+});
+
+//agregar juegos
+app.post("/games/add", async (req, res) => {
+	try{
+		const title = xss(req.body.title);
+		const description = xss(req.body.description);
+		const genre = xss(req.body.genre);
+		const platform = xss(req.body.platform);
+		const img = req.body.img;
+		const releaseDate = req.body.releaseDate;
+
+		if(!title || !description || !img){
+			res.json({success: false, message: "Faltan campos"});
+		}
+
+		const newGame = new Game({
+			title,
+			description,
+			genre: Array.isArray(genre) ? genre : [genre],
+			platform: Array.isArray(platform) ? platform : [platform],
+			img,
+			releaseDate
+		});
+		
+		await newGame.save();
+		res.json({success: true, message: "se agrego el juego."});
+
+
+	}catch(error){
+		console.log(error);
+	}
 });
 
 

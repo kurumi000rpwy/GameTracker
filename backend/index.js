@@ -5,7 +5,7 @@ const mongoose = require('mongoose');//requerimiento para la base d datoas
 const express = require('express');//express para el server
 const bcrypt = require('bcrypt');//para el encriptado
 const chalk = require('chalk');//para los colores de la consola
-const path = require('path');//para las rutas y archivos
+//const path = require('path');//para las rutas y archivos
 const xss = require('xss');
 
 //Nivel de encryptado
@@ -19,12 +19,16 @@ connectDB();
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+
 //Archivos de public (para que se vea la pagina)
-app.use(express.static(path.join(__dirname, 'public')));
+/*app.use(express.static(path.join(__dirname, 'public')));
 
 //Ruta raiz
 app.get('/', (req, res) => {
-	res.send(`Servidor activo en el puerto ${port}.`);
+	res.send(`
+		Servidor node en http://localhost:8080
+		
+		Servidor react en http://localhost:5173`);
 });
 
 //Acceso a la pagina de crear cuenta
@@ -36,7 +40,7 @@ app.get("/register", (req, res) => {
 app.get("/login", (req, res) => {
 	res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
-
+*/
 //Ingresar
 app.post("/login", async (req, res) => {
 	try{
@@ -79,7 +83,7 @@ app.post("/login", async (req, res) => {
 });
 
 //Crear usuario
-app.post("/register", async (req, res) => {
+app.post("/api/register", async (req, res) => {
 	try{
 		//Verificar si el usuario y email existen
 		let {username, email, password} = req.body;
@@ -98,7 +102,8 @@ app.post("/register", async (req, res) => {
 			//Crear usuario
 			const newUser = new User({username, email, password: hashedPassword});
 			await newUser.save();
-			res.send(`Se creo el usuario ${newUser.username}.`);
+
+			res.json()
 		}
 	}catch(error){
 		res.send(error)
@@ -167,5 +172,6 @@ app.post("/games/add", async (req, res) => {
 
 //Iniciar servidor
 app.listen(port, () => {
-	console.log(`${chalk.green('[ + ]')} Servidor corriendo en ${chalk.cyan(`http://localhost:${port}/`)}`);
+	console.log(`${chalk.green('[ + ]')} Servidor node corriendo en ${chalk.cyan(`http://localhost:${port}/api`)}`);
+	console.log(`${chalk.green('[ + ]')} Servidor react corriendo en ${chalk.cyan(`http://localhost:5173/`)}`);
 });

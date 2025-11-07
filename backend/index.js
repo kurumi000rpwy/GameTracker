@@ -1,13 +1,15 @@
 //Importacion de paquetes necesarios
 const {User, Game, Review} = require('./models/models.js'); //Modelo de la db
 const connectDB = require('./config/db.js'); //conectar a la base de datos
+
+const cookieParser = require("cookie-parser");
 const mongoose = require('mongoose');//requerimiento para la base d datoas
 const express = require('express');//express para el server
 const bcrypt = require('bcrypt');//para el encriptado
 const chalk = require('chalk');//para los colores de la consola
-//const path = require('path');//para las rutas y archivos
+const cors = require('cors');
 const xss = require('xss');
-
+const jwt = require("jsonwebtoken");
 //Nivel de encryptado
 const hashLevel = 10
 
@@ -16,40 +18,24 @@ const port = 8080;
 
 //Conectar a la base de datos
 connectDB();
-
+app.use(cors({
+	  origin: "http://localhost:5173",
+	  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-//Archivos de public (para que se vea la pagina)
-/*app.use(express.static(path.join(__dirname, 'public')));
+app.use(cookieParser());
+const SECRET_KEY = "7f3a2b9c1e4d8a55e3a60d9b7ef4a0c1";
 
-//Ruta raiz
-app.get('/', (req, res) => {
-	res.send(`
-		Servidor node en http://localhost:8080
-		
-		Servidor react en http://localhost:5173`);
-});
-
-//Acceso a la pagina de crear cuenta
-app.get("/register", (req, res) => {
-	res.sendFile(path.join(__dirname, 'public', 'register.html'));		
-}); 
-
-//Acceso a la pagina de crear cuenta
-app.get("/login", (req, res) => {
-	res.sendFile(path.join(__dirname, 'public', 'login.html'));
-});
-*/
-//Ingresar
-app.post("/login", async (req, res) => {
+app.post("/api/login", async (req, res) => {
 	try{
 		let identifier = xss(req.body.identifier);
 		let password = xss(req.body.password);
 		
 		//Verificar si llego algo del js
 		if(!identifier || !password){
-			return res.json({success: false, messge: "Faltan campos"});
+			return res.json({success: false, message: "Faltan campos"});
 		}
 		
 		//Ver si es email o username
@@ -73,12 +59,34 @@ app.post("/login", async (req, res) => {
 		if(!validPassword){
 			return res.json({success: false, message: "Contrasena incorrecta"});
 		}
+		
+		//Crear rl tokrn de la cookie
+		const token = jwt.sign(
+			 { username: user.username, email: user.email },
+			 SECRET_KEY,
+			 { expiresIn: "2h" }
+			 );
 
-		res.send(`Bienvenido ${user}`);
+		res.cookie("token", token, {
+			httpOnly: true,
+			sameSite: "lax",
+			secure: false, // ponlo en true si usas HTTPS
+			maxAge: 2 * 60 * 60 * 1000, // 2 horas
+			});
+
+		res.json({
+			  success: true,
+			  message: `Bienvenido ${user.username}`,
+			  user: {
+				      username: user.username,
+				      email: user.email,
+				    },
+		});
 			
 
 	}catch(error){
-		console.log(error);
+		console.error(error);
+		res.status(500).json({ success: false, message: "Error interno del servidor" });
 	}
 });
 
@@ -92,9 +100,9 @@ app.post("/api/register", async (req, res) => {
 		emailExist = await User.findOne({email});
 		
 		if(usernameExist){
-			return res.send(`El nombre de usuario ${username} ya existe, por favor elige otro.`);
+			 return res.json({ success: false, message: `El usuario ${username} ya existe` });
 		}if(emailExist){
-			return res.send(`El correo ${email} ya esta registrado, elige otro correo.`);
+			 return res.json({ success: false, message: `El correo ${email} ya está registrado` });
 		}else{
 			//Encryptar contrasenia
 			let hashedPassword = await bcrypt.hash(password, hashLevel);
@@ -103,7 +111,7 @@ app.post("/api/register", async (req, res) => {
 			const newUser = new User({username, email, password: hashedPassword});
 			await newUser.save();
 
-			res.json()
+			return res.json({ success: true, message: "Usuario creado correctamente" });
 		}
 	}catch(error){
 		res.send(error)
@@ -132,11 +140,13 @@ app.get("/api/games", async (req, res) => {
 	res.json({success: true, games, totalPages: Math.ceil(total / limit), page});
 });
 
-//pagina para agregar juegos
-app.get("/games/add", async (req, res) => {
-	res.sendFile(path.join(__dirname, "public", "add.html"));
+//pagina admin
+app.get("/api/adminz", requireAuth, (req, res) => {
+	if(req.user.username !== "adminz") {
+		return res.status(403).json({ error: "Acceso denegado" });
+	}
+	res.json({ message: "Bienvenido, adminz." });
 });
-
 //agregar juegos
 app.post("/games/add", async (req, res) => {
 	try{
@@ -169,9 +179,61 @@ app.post("/games/add", async (req, res) => {
 	}
 });
 
+app.get("/api/userinfo", (req, res) => {
+	  const token = req.cookies.token;
 
+	  if (!token) {
+		      return res.json({ success: false, message: "No hay token" });
+		    }
+
+	  try {
+		      const decoded = jwt.verify(token, SECRET_KEY); // usa la misma constante del login
+		      res.json({
+			            success: true,
+			            user: { username: decoded.username, email: decoded.email },
+			          });
+		    } catch (error) {
+			        res.json({ success: false, message: "Token inválido o expirado" });
+			      }
+});
+app.get("/api/games/:id", async (req, res) => {
+	try{
+		const game = await Game.findOne({ title: { $regex: new RegExp(`^${req.params.id}$`, "i") }});
+
+		if(!game){
+			return res.status(404).json({ success: false, message: "Juego no encontrado" });
+
+		}
+		res.json({ success: true, game });
+		
+	}catch(err){
+		console.log(err);
+	}
+
+});
 //Iniciar servidor
 app.listen(port, () => {
 	console.log(`${chalk.green('[ + ]')} Servidor node corriendo en ${chalk.cyan(`http://localhost:${port}/api`)}`);
 	console.log(`${chalk.green('[ + ]')} Servidor react corriendo en ${chalk.cyan(`http://localhost:5173/`)}`);
 });
+
+//revisar si anda loguado
+function requireAuth(req, res, next) {
+	const token = req.cookies.token;
+	if (!token) return res.status(401).json({ error: "No autenticado" });
+
+	try {
+		const decoded = jwt.verify(token, SECRET_KEY);
+		req.user = decoded;
+		next();
+	} catch {
+		return res.status(403).json({ error: "Token inválido" });
+	}
+}
+
+function onlyAdminz(req, res, next) {
+	if(req.user.username !== "adminz") {
+		return res.status(403).json({ mensaje: "Acceso solo para Cristian" });
+	}
+	next();
+}

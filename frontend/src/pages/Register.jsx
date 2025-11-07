@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "./assets/css/Register.css";
 
 const Register = () => {
@@ -16,13 +17,12 @@ const Register = () => {
   const passRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,32}$/;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
 
     if (!userRegex.test(username)) {
-      newErrors.username =
-        "Nombre inválido (6–19 caracteres, sin símbolos raros)";
+      newErrors.username = "Nombre inválido (6–19 caracteres, sin símbolos raros)";
     }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -39,9 +39,27 @@ const Register = () => {
 
     setErrors(newErrors);
 
+    // Si no hay errores, enviar datos al backend
     if (Object.keys(newErrors).length === 0) {
-      setResult("Registro exitoso ✅");
-      // Aquí podrías hacer fetch('/register', { method: 'POST', body: ... })
+      try {
+        const res = await fetch("/api/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, email, password }),
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          setResult("✅ " + data.message);
+          handleClear();
+        } else {
+          setResult("⚠️ " + data.message);
+        }
+      } catch (error) {
+        console.error(error);
+        setResult("❌ Error al conectar con el servidor");
+      }
     } else {
       setResult("");
     }
@@ -53,7 +71,6 @@ const Register = () => {
     setPassword("");
     setConfirm("");
     setErrors({});
-    setResult("");
   };
 
   return (
@@ -154,7 +171,7 @@ const Register = () => {
 
         <footer>
           <p>
-            ¿Ya tienes cuenta? <a href="#">Inicia sesión</a>
+            <Link to="/login" className="a">Ya tines cuenta? Inivia Sesión</Link>
           </p>
         </footer>
       </section>

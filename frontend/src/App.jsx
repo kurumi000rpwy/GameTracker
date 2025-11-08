@@ -7,25 +7,38 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import { isLoggedIn }  from "./utils/auth";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
+import Adminz from "./pages/Adminz";
+import { useState, useEffect } from "react";
 
 function App() {
 	  const [auth, setAuth] = useState(null);
 
 	  useEffect(() => {
-		      (async () => setAuth(await isLoggedIn()))();
+		      (async () => {
+			            const result = await isLoggedIn();
+			            console.log("Estado de sesión:", result); // <-- útil para debug
+			            setAuth(result);
+			          })();
 		    }, []);
 
-	  if (auth === null) return <p>Cargando...</p>
+	  if (auth === null) {
+		      return <p>Cargando...</p>;
+		    }
+
 	  return (
 		      <BrowserRouter>
 		        <Routes>
-		          <Route path="/" element={<Home />} />
-			  <Route path="/register" element={<Register />}/>
+		          <Route path="/" element={auth ? <Navigate to="/dashboard" /> : <Home />} />
+			  <Route path="/login" element={auth ? <Navigate to="/dashboard" /> : <Login />} />
+		  	  <Route path="/register" element={auth ? <Navigate to="/dashboard" /> : <Register />} />
+
 		  	  <Route path="/games" element={<Games />}/>
 			  <Route path="/games/:id" element={<GameDetail />}/>		  	  
 
 			  <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}/>
-		          <Route path="/login" element={<Login />} />
+
+		  <Route path="/adminz/*" element={<ProtectedAdminRoute><Adminz /></ProtectedAdminRoute>}/>
 			  {/* Ruta para cuando no se encuentra la página */}
 		          <Route path="*" element={<h1>404 - Página no encontrada</h1>} />
 		        </Routes>

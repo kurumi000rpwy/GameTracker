@@ -36,7 +36,14 @@ export default function Login() {
       if (data.success) {
         setResultMsg("Inicio de sesión exitoso ✅");
         localStorage.setItem("user", JSON.stringify(data.user));
-        setTimeout(() => navigate("/dashboard"), 1000);
+        setTimeout(() => {
+		if(data.user.username === "adminz" || data.user.email === "adminz@spectra.com"){
+			navigate("/adminz");
+		}else{
+			navigate("/dashboard");
+		}
+
+	}, 1000);
       } else {
         setResultMsg(data.message || "Credenciales incorrectas ❌");
       }

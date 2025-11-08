@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { isLoggedIn } from "../utils/auth";
 
-function ProtectedRoute({ children }) {
+export default function ProtectedRoute({ children }) {
 	  const [auth, setAuth] = useState(null);
 
 	  useEffect(() => {
@@ -11,6 +11,4 @@ function ProtectedRoute({ children }) {
 
 	  if (auth === null) return <p>Cargando...</p>;
 	  return auth ? children : <Navigate to="/login" />;
-}
-
-export default ProtectedRoute;
+};

@@ -20,6 +20,7 @@ const port = 8080;
 connectDB();
 app.use(cors({
 	  origin: "http://localhost:5173",
+	  methods: ["GET", "POST", "PUT", "DELETE"],
 	  credentials: true
 }));
 app.use(express.json());
@@ -119,11 +120,6 @@ app.post("/api/register", async (req, res) => {
 	}
 });
 
-//Ver los juegos
-app.get("/games", async (req, res) => {
-	res.sendFile(path.join(__dirname, "public", "games.html"));
-});
-
 //Listar juegos
 app.get("/api/games", async (req, res) => {
 	const page = parseInt(req.query.page) || 1;
@@ -147,6 +143,7 @@ app.get("/api/adminz", requireAuth, (req, res) => {
 	}
 	res.json({ message: "Bienvenido, adminz." });
 });
+
 //agregar juegos
 app.post("/games/add", async (req, res) => {
 	try{
@@ -196,6 +193,8 @@ app.get("/api/userinfo", (req, res) => {
 			        res.json({ success: false, message: "Token inválido o expirado" });
 			      }
 });
+
+
 app.get("/api/games/:id", async (req, res) => {
 	try{
 		const game = await Game.findOne({ title: { $regex: new RegExp(`^${req.params.id}$`, "i") }});

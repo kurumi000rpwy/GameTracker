@@ -9,6 +9,7 @@ import { isLoggedIn }  from "./utils/auth";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
 import Adminz from "./pages/Adminz";
+import AddGame from "./pages/AddGame";
 import { useState, useEffect } from "react";
 
 function App() {
@@ -38,7 +39,8 @@ function App() {
 
 			  <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}/>
 
-		  <Route path="/adminz/*" element={<ProtectedAdminRoute><Adminz /></ProtectedAdminRoute>}/>
+		  	  <Route path="/adminz/*" element={<ProtectedAdminRoute><Adminz /></ProtectedAdminRoute>}/>
+		  	<Route path="/adminz/add/game" element={<ProtectedAdminRoute><AddGame /></ProtectedAdminRoute>} />
 			  {/* Ruta para cuando no se encuentra la página */}
 		          <Route path="*" element={<h1>404 - Página no encontrada</h1>} />
 		        </Routes>

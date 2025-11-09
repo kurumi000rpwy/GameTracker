@@ -48,7 +48,7 @@ export default function Adminz() {
 
           <nav className="nav">
             <Link to="/" className="nav a">Inicio</Link>
-            <Link to="/games" className="nav a">Explorar Juegos</Link>
+            <Link to="/adminz/add/game" className="nav a">Agregar Juegos</Link>
             <Link to="/featured" className="nav a">Destacados</Link>
             <Link to="/news" className="nav a">Noticias</Link>
             <Link to="/about" className="nav a">Sobre nosotros</Link>
@@ -67,7 +67,7 @@ export default function Adminz() {
           onClick={() => setSidebarOpen(false)}
           aria-label="Cerrar menú"
         >
-          ✕
+          �~\~U
         </button>
       </aside>
 
@@ -89,7 +89,7 @@ export default function Adminz() {
               onClick={() => setSidebarOpen(true)}
               aria-label="Abrir menú"
             >
-              ☰
+              �~X�
             </button>
           </div>
 
@@ -110,3 +110,5 @@ export default function Adminz() {
     </div>
   );
 }
+
+

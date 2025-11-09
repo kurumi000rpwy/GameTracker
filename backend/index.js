@@ -145,7 +145,7 @@ app.get("/api/adminz", requireAuth, (req, res) => {
 });
 
 //agregar juegos
-app.post("/games/add", async (req, res) => {
+app.post("/adminz/add/game", async (req, res) => {
 	try{
 		const title = xss(req.body.title);
 		const description = xss(req.body.description);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams , useNavigate} from "react-router-dom";
 import "./assets/css/Games.css";
 
 export default function GameDetail() {
@@ -8,9 +8,20 @@ export default function GameDetail() {
   const [reviews, setReviews] = useState([]);
   const [message, setMessage] = useState("");
   const { id } = useParams();
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    fetchGame();
+  fetchGame();
+
+    // Buscar usuario en localStorage
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch {
+        localStorage.removeItem("user"); // Si hay error, limpiar datos corruptos
+      }
+    }
   }, [id]);
 
   async function fetchGame() {
@@ -41,7 +52,26 @@ export default function GameDetail() {
     }
     return stars;
   };
+  
+async function handleLogout() {
+  try {
+    const res = await fetch("/api/logout", {
+      method: "POST",
+      credentials: "include", // para enviar la cookie al backend
+    });
 
+    const data = await res.json();
+    if (data.success) {
+      localStorage.removeItem("user"); // borra el usuario local
+      setUser(null);
+      navigate("/"); // redirige al inicio
+    } else {
+      console.error("Error al cerrar sesión:", data.message);
+    }
+  } catch (error) {
+    console.error("Error de red al cerrar sesión:", error);
+  }
+}
   return (
     <div className="app">
       {/* === SIDEBAR === */}
@@ -68,7 +98,7 @@ export default function GameDetail() {
         </div>
 
         <button className="close-drawer" onClick={() => setSidebarOpen(false)}>
-          ✕
+           ✖
         </button>
       </aside>
 
@@ -81,7 +111,7 @@ export default function GameDetail() {
         <header className="navbar">
           <div className="nav-left">
             <button className="hamburger" onClick={() => setSidebarOpen(true)}>
-              ☰
+               ☰�
             </button>
           </div>
 
@@ -90,12 +120,23 @@ export default function GameDetail() {
           </div>
 
           <div className="nav-right">
-            <Link to="/login" className="btn auth">
-              Iniciar sesión
-            </Link>
-            <Link to="/register" className="btn register">
-              Registro
-            </Link>
+            {!user ? (
+              <>
+                <Link to="/login" className="btn auth">
+                  Iniciar sesión
+                </Link>
+                <Link to="/register" className="btn register">
+                  Registro
+                </Link>
+              </>
+            ) : (
+              <>
+                <span className="game-description">Hola, {user.username}</span>
+                <button onClick={handleLogout} className="btn logout">
+                  Cerrar sesión
+                </button>
+              </>
+            )}
           </div>
         </header>
 
@@ -106,7 +147,7 @@ export default function GameDetail() {
           {game && (
             <div className="game-detail-card">
               <img
-                src={game.image || "/placeholder.jpg"}
+                src={game.img || "/placeholder.jpg"}
                 alt={game.title}
                 className="game-detail-image"
               />

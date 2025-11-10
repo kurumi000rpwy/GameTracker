@@ -9,11 +9,16 @@ export default function Games() {
   const [totalPages, setTotalPages] = useState(1);
   const [message, setMessage] = useState("");
   const navigate = useNavigate(); // 👈 para redirigir
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     fetchGames(page);
-  }, [page]);
-
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser)); // Guardamos el usuario en el estado
+    }
+    }, [page]);
+  
   async function fetchGames(p) {
     try {
       const res = await fetch(`/api/games?page=${p}`);
@@ -38,7 +43,26 @@ export default function Games() {
   function handleGameClick(id) {
     navigate(`/games/${id}`);
   }
+ 
+  async function handleLogout() {
+  try {
+    const res = await fetch("/api/logout", {
+      method: "POST",
+      credentials: "include", // para enviar la cookie al backend
+    });
 
+    const data = await res.json();
+    if (data.success) {
+      localStorage.removeItem("user"); // borra el usuario local
+      setUser(null);
+      navigate("/"); // redirige al inicio
+    } else {
+      console.error("Error al cerrar sesión:", data.message);
+    }
+  } catch (error) {
+    console.error("Error de red al cerrar sesión:", error);
+  }
+}
   return (
     <div className="app">
       <aside className={`sidebar ${sidebarOpen ? "open" : ""}`}>
@@ -64,7 +88,7 @@ export default function Games() {
         </div>
 
         <button className="close-drawer" onClick={() => setSidebarOpen(false)}>
-          ^|^u
+          ✖
         </button>
       </aside>
 
@@ -79,7 +103,7 @@ export default function Games() {
               className="hamburger"
               onClick={() => setSidebarOpen(true)}
             >
-              ^x
+              ☰
             </button>
           </div>
 
@@ -92,13 +116,24 @@ export default function Games() {
           </div>
 
           <div className="nav-right">
-            <Link to="/login" className="btn auth">Iniciar sesión</Link>
-            <Link to="/register" className="btn register">Registro</Link>
-          </div>
+		{!user ? (
+              // 👇 Si NO hay usuario, muestra login y registro
+              <>
+                <Link to="/login" className="btn auth">Iniciar sesión</Link>
+                <Link to="/register" className="btn register">Registro</Link>
+              </>
+            ) : (
+              // 👇 Si hay usuario, muestra su nombre y botón de salir
+              <>
+                <span className="h3">Hola, {user.username}</span>
+                <button onClick={handleLogout} className="btn logout">Cerrar sesión</button>
+              </>
+            )}
+        </div>
         </header>
 
         <section className="games-section">
-          <h1 className="games-title">Explora los juegos ^=^n</h1>
+          <h1 className="games-title">Explora los juegos</h1>
 
           <div className="games-grid">
             {games.length > 0 ? (
@@ -106,10 +141,10 @@ export default function Games() {
                 <div
                   key={i}
                   className="game-card"
-                  onClick={() => handleGameClick(g.title)} // 👈 evento de clic
+                  onClick={() => handleGameClick(g.title)} //  evento de clic
                 >
                   <img
-                    src={g.image || "/placeholder.jpg"}
+                    src={g.img}
                     alt={g.title}
                   />
                   <h3>{g.title}</h3>

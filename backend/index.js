@@ -135,6 +135,14 @@ app.get("/api/games", async (req, res) => {
 
 	res.json({success: true, games, totalPages: Math.ceil(total / limit), page});
 });
+app.post("/api/logout", (req, res) => {
+	  res.clearCookie("token", {
+		      httpOnly: true,
+		      sameSite: "lax",
+		      secure: false, // pon true si usas HTTPS
+		    });
+	  res.json({ success: true, message: "Sesión cerrada correctamente" });
+});
 
 //pagina admin
 app.get("/api/adminz", requireAuth, (req, res) => {

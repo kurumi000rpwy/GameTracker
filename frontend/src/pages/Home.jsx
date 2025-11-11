@@ -104,12 +104,13 @@ function Home() {
           <div className="hero-bg" aria-hidden="true" />
           <div className="overlay-dark" aria-hidden="true" />
           <div className="hero-content">
-            <h2 className="spectra-title">spectra</h2>
+            <h2 className="spectra-title">Spectra</h2>
             <p className="typing">
               {text}
               <span className="cursor">|</span>
             </p>
-            <button className="cta">Ver juegos</button>
+            <Link to="/games" className="cta">
+	  Explorar Juegos</Link>
           </div>
         </section>
       </main>

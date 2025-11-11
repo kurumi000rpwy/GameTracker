@@ -9,6 +9,10 @@ export default function GameDetail() {
   const [message, setMessage] = useState("");
   const { id } = useParams();
   const [user, setUser] = useState(null);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
+  const navigate = useNavigate();
+
 
   useEffect(() => {
   fetchGame();
@@ -70,6 +74,42 @@ async function handleLogout() {
     }
   } catch (error) {
     console.error("Error de red al cerrar sesión:", error);
+  }
+}
+  async function handleReviewSubmit(e) {
+  e.preventDefault();
+  if (!user) return alert("Debes iniciar sesión para dejar una reseña.");
+
+  console.log({
+    username: user?.username,
+    gameTitle: game?.title,
+    rating,
+    comment,
+  });
+
+  try {
+    const res = await fetch("/api/reviews", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: user?.username,
+        gameTitle: game?.title,
+        rating,
+        comment,
+      }),
+    });
+
+    const data = await res.json();
+    console.log("Respuesta del backend:", data);
+    if (data.success) {
+      setReviews([data.review, ...reviews]);
+      setRating(0);
+      setComment("");
+    } else {
+      alert(data.message);
+    }
+  } catch (err) {
+    alert("Error al enviar la reseña");
   }
 }
   return (
@@ -172,10 +212,34 @@ async function handleLogout() {
           {/* === REVIEWS === */}
           <div className="reviews-section">
             <h2>Reseñas</h2>
+
+            {user && (
+              <form className="review-form" onSubmit={handleReviewSubmit}>
+                <div className="review-stars">
+                  {[1, 2, 3, 4, 5].map((num) => (
+                    <span
+                      key={num}
+                      className={num <= rating ? "star filled" : "star"}
+                      onClick={() => setRating(num)}
+                    >
+                      ★
+                    </span>
+                  ))}
+                </div>
+                <textarea
+                  placeholder="Escribe tu reseña..."
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                />
+                <button type="submit">Publicar reseña</button>
+              </form>
+            )}
+
             {reviews.length > 0 ? (
               reviews.map((r, i) => (
                 <div key={i} className="review-card">
-                  <p className="review-user">👤 {r.user}</p>
+                  <p className="review-user">👤 {r.user?.username || "Anónimo"}</p>
+                  <div className="review-rating">{renderStars(r.rating)}</div>
                   <p className="review-text">{r.comment}</p>
                 </div>
               ))

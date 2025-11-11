@@ -349,43 +349,62 @@ html, body, #root {
 }
 
 .star {
-  color: #444;
+  color: #555;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
 }
 
 .star.filled {
-  color: #00ffaa;
+  color: gold;
 }
 
-.game-description {
-  margin-top: 15px;
-  color: #ccc;
-  line-height: 1.6;
+.review-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 2rem;
 }
 
-.reviews-section {
-  margin-top: 40px;
-  width: 100%;
-  max-width: 900px;
+.review-form textarea {
+  background: #222;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  resize: none;
 }
 
-.reviews-section h2 {
-  margin-bottom: 15px;
+.review-form button {
+  align-self: flex-end;
+  background: #e63946;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.review-form button:hover {
+  background: #ff4d5a;
 }
 
 .review-card {
-  background: #111;
-  border-radius: 10px;
-  padding: 15px;
-  margin-bottom: 10px;
+  background: #181818;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
 }
 
 .review-user {
   font-weight: bold;
-  color: #00ffaa;
 }
 
-.no-reviews {
-  color: #777;
-  font-style: italic;
-  text-align: center;
+.review-text {
+  margin-top: 0.5rem;
+}
+
+.review-rating {
+  margin: 0.3rem 0;
 }

@@ -5,7 +5,7 @@ const connectDB = require('./config/db.js'); //conectar a la base de datos
 const cookieParser = require("cookie-parser");
 const mongoose = require('mongoose');//requerimiento para la base d datoas
 const express = require('express');//express para el server
-const bcrypt = require('bcrypt');//para el encriptado
+const bcrypt = require('bcryptjs');//para el encriptado
 const chalk = require('chalk');//para los colores de la consola
 const cors = require('cors');
 const xss = require('xss');
@@ -202,21 +202,101 @@ app.get("/api/userinfo", (req, res) => {
 			      }
 });
 
-
 app.get("/api/games/:id", async (req, res) => {
-	try{
-		const game = await Game.findOne({ title: { $regex: new RegExp(`^${req.params.id}$`, "i") }});
+  try {
+    // Buscar el juego por título (sin importar mayúsculas/minúsculas)
+    const game = await Game.findOne({
+      title: { $regex: new RegExp(`^${req.params.id}$`, "i") },
+    })
+      // Poblar las reseñas y los usuarios que las escribieron
+      .populate({
+        path: "reviews",
+        populate: { path: "user", select: "username" },
+      });
 
-		if(!game){
-			return res.status(404).json({ success: false, message: "Juego no encontrado" });
+    if (!game) {
+      return res.status(404).json({
+        success: false,
+        message: "Juego no encontrado",
+      });
+    }
 
-		}
-		res.json({ success: true, game });
-		
-	}catch(err){
-		console.log(err);
-	}
+    // Responder con el juego y las reseñas pobladas
+    res.json({
+      success: true,
+      game,
+      reviews: game.reviews || [],
+    });
+  } catch (err) {
+    console.error("Error al obtener el juego:", err);
+    res.status(500).json({
+      success: false,
+      message: "Error interno del servidor",
+    });
+  }
+});
 
+// Obtener reseñas de un juego
+app.get("/api/reviews/:gameId", async (req, res) => {
+  try {
+    const reviews = await Review.find({ game: req.params.gameId })
+      .populate("user", "username")
+      .sort({ createdAt: -1 });
+
+    res.json({ success: true, reviews });
+  } catch (error) {
+    console.error("Error al obtener reseñas:", error);
+    res.json({ success: false, message: "Error al obtener las reseñas" });
+  }
+});
+
+app.post("/api/reviews", async (req, res) => {
+  try {
+    const { username, gameTitle, rating, comment } = req.body;
+
+    if (!username || !gameTitle || !rating) {
+      return res.json({ success: false, message: "Faltan campos obligatorios" });
+    }
+
+    // Buscar usuario por username
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.json({ success: false, message: "Usuario no encontrado" });
+    }
+
+    // Buscar juego por título (usa regex para no importar mayúsculas/minúsculas)
+    const game = await Game.findOne({
+      title: { $regex: new RegExp(`^${gameTitle}$`, "i") },
+    });
+    if (!game) {
+      return res.json({ success: false, message: "Juego no encontrado" });
+    }
+
+    // Crear nueva reseña usando los IDs correctos
+    const newReview = new Review({
+      user: user._id,
+      game: game._id,
+      rating,
+      comment,
+    });
+
+    await newReview.save();
+
+    // Vincular la reseña con usuario y juego
+    await User.findByIdAndUpdate(user._id, { $push: { reviews: newReview._id } });
+    await Game.findByIdAndUpdate(game._id, { $push: { reviews: newReview._id } });
+
+    const populatedReview = await newReview.populate("user", "username");
+
+    res.json({
+      success: true,
+      message: "Reseña agregada correctamente",
+      review: populatedReview,
+    });
+  } catch (error) {
+    console.error("Error al agregar reseña:", error);
+    res.json({ success: false, message: "Error al agregar la reseña" });
+  }
 });
 //Iniciar servidor
 app.listen(port, () => {

@@ -30,7 +30,7 @@ const Register = () => {
     }
 
     if (!passRegex.test(password)) {
-      newErrors.password = "Contraseña insegura";
+      newErrors.password = "La contraseña debe tener minimo un número, mayúscula, minuscula y un simbolo.";
     }
 
     if (password !== confirm) {

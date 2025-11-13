@@ -12,7 +12,7 @@ export default function GameDetail() {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const navigate = useNavigate();
-
+  const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
   fetchGame();
@@ -26,6 +26,8 @@ export default function GameDetail() {
         localStorage.removeItem("user"); // Si hay error, limpiar datos corruptos
       }
     }
+  const favs = JSON.parse(localStorage.getItem("favorites") || "[]");
+  setIsFavorite(favs.includes(id));
   }, [id]);
 
   async function fetchGame() {
@@ -57,6 +59,50 @@ export default function GameDetail() {
     return stars;
   };
   
+const toggleFavorite = async () => {
+  if (!user) {
+    alert("Debes iniciar sesión para añadir a favoritos.");
+    return;
+  }
+
+  // Verificar IDs válidos
+  const userId = user?.username || user?._id;
+  const gameId = game?._id || game?.id;
+
+  if (!userId || !gameId) {
+    console.error("Faltan IDs:", { userId, gameId });
+    alert("No se pudo identificar el usuario o el juego.");
+    return;
+  }
+
+  try {
+    const res = await fetch(`http://localhost:8080/api/favorites/${game._id}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+    });
+
+    const data = await res.json();
+    console.log("Respuesta del backend:", data);
+
+    if (data.success) {
+      setIsFavorite(data.isFavorite);
+
+      // Guardar localmente la lista de favoritos
+      const favs = JSON.parse(localStorage.getItem("favorites") || "[]");
+      if (data.isFavorite) {
+        localStorage.setItem("favorites", JSON.stringify([...favs, id]));
+      } else {
+        localStorage.setItem("favorites", JSON.stringify(favs.filter(f => f !== id)));
+      }
+    } else {
+      alert(data.message || "No se pudo actualizar el favorito.");
+    }
+  } catch (err) {
+    console.error("Error al actualizar favorito:", err);
+  }
+};
+
 async function handleLogout() {
   try {
     const res = await fetch("/api/logout", {
@@ -194,7 +240,13 @@ async function handleLogout() {
 
               <div className="game-detail-info">
                 <h1 className="game-detail-title">{game.title}</h1>
-                <div className="game-rating">{renderStars(game.rating)}</div>
+                <span
+                    className={`favorite-btn ${isFavorite ? "active" : ""}`}
+                    onClick={toggleFavorite}>
+                    ♥
+                  </span> 
+
+               <div className="game-rating">{renderStars(game.rating)}</div>
                 <p className="game-genre">
                   🎭 <strong>Género:</strong> {game.genre}
                 </p>

@@ -79,6 +79,7 @@ app.post("/api/login", async (req, res) => {
 			  success: true,
 			  message: `Bienvenido ${user.username}`,
 			  user: {
+				      _id: user._id,
 				      username: user.username,
 				      email: user.email,
 				    },
@@ -202,6 +203,72 @@ app.get("/api/userinfo", (req, res) => {
 			      }
 });
 
+
+app.post("/api/favorites/:gameId", async (req, res) => {
+  try {
+    const { gameId } = req.params;
+
+    // 1️⃣ Verificamos que exista el ID del juego
+    if (!gameId) {
+      return res.status(400).json({ success: false, message: "No se recibió el ID del juego" });
+    }
+
+    // 2️⃣ Intentamos obtener el token desde cookie o encabezado Authorization
+    const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      console.log("⚠️ No se encontró token en la solicitud");
+      return res.status(401).json({ success: false, message: "Usuario no autenticado" });
+    }
+
+    // 3️⃣ Verificamos y decodificamos el token
+    let decoded;
+    try {
+      decoded = jwt.verify(token, SECRET_KEY);
+    } catch (error) {
+      console.error("❌ Token inválido:", error.message);
+      return res.status(403).json({ success: false, message: "Token inválido o expirado" });
+    }
+
+    // 4️⃣ Buscamos al usuario usando el username del token
+    const user = await User.findOne({ username: decoded.username });
+    if (!user) {
+      console.log("⚠️ Usuario no encontrado:", decoded.username);
+      return res.status(404).json({ success: false, message: "Usuario no encontrado" });
+    }
+
+    // 5️⃣ Buscamos el juego en la base de datos
+    const game = await Game.findById(gameId);
+    if (!game) {
+      console.log("⚠️ Juego no encontrado:", gameId);
+      return res.status(404).json({ success: false, message: "Juego no encontrado" });
+    }
+
+    // 6️⃣ Alternamos entre agregar o eliminar
+    const index = user.favoritegames.indexOf(gameId);
+    let isFavorite;
+    if (index === -1) {
+      user.favoritegames.push(gameId);
+      isFavorite = true;
+    } else {
+      user.favoritegames.splice(index, 1);
+      isFavorite = false;
+    }
+
+    await user.save();
+
+    res.json({
+      success: true,
+      isFavorite,
+      favoritegames: user.favoritegames,
+      message: isFavorite
+        ? `${game.title} añadido a favoritos`
+        : `${game.title} eliminado de favoritos`,
+    });
+  } catch (error) {
+    console.error("💥 Error al actualizar favoritos:", error);
+    res.status(500).json({ success: false, message: "Error al actualizar favoritos" });
+  }
+});
 app.get("/api/games/:id", async (req, res) => {
   try {
     // Buscar el juego por título (sin importar mayúsculas/minúsculas)

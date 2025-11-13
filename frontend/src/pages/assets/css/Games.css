@@ -408,3 +408,20 @@ html, body, #root {
 .review-rating {
   margin: 0.3rem 0;
 }
+.favorite-btn {
+  background: none;
+  border: none;
+  font-size: 30px;
+  cursor: pointer;
+  margin-left: 10px;
+  color: #777;
+  transition: color 0.2s ease;
+}
+
+.favorite-btn.active {
+  color: #ff1a75; /* Fucsia */
+}
+
+.favorite-btn:hover {
+  transform: scale(1.1);
+}

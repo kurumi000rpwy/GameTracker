@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import Home from "./pages/Home";
+import Favorites from "./pages/Favorites";
 import Register from "./pages/Register";
 import Games from "./pages/Games";
 import GameDetail from "./pages/GameDetail";
@@ -38,6 +39,7 @@ function App() {
 			  <Route path="/games/:id" element={<GameDetail />}/>		  	  
 
 			  <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}/>
+			  <Route path="/favorites" element={<ProtectedRoute><Favorites /></ProtectedRoute>}/>
 
 		  	  <Route path="/adminz/*" element={<ProtectedAdminRoute><Adminz /></ProtectedAdminRoute>}/>
 		  	<Route path="/adminz/add/game" element={<ProtectedAdminRoute><AddGame /></ProtectedAdminRoute>} />

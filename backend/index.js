@@ -204,6 +204,29 @@ app.get("/api/userinfo", (req, res) => {
 });
 
 
+// Obtener favoritos del usuario
+app.get("/api/user/:id/favorites", async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const user = await User.findById(id)
+            .populate("favoritegames") // <- Carga la info de los juegos completos
+            .exec();
+
+        if (!user) {
+            return res.json({ success: false, message: "Usuario no encontrado" });
+        }
+
+        return res.json({
+            success: true,
+            favorites: user.favoritegames
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.json({ success: false, message: "Error al obtener favoritos" });
+    }
+});
 app.post("/api/favorites/:gameId", async (req, res) => {
   try {
     const { gameId } = req.params;

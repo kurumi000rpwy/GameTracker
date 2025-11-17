@@ -19,7 +19,7 @@ const port = 8080;
 //Conectar a la base de datos
 connectDB();
 app.use(cors({
-	  origin: "http://localhost:5173",
+	origin: "https://kurumi000rpwy.github.io",
 	  methods: ["GET", "POST", "PUT", "DELETE"],
 	  credentials: true
 }));

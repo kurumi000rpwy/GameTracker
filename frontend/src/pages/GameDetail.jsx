@@ -32,7 +32,7 @@ export default function GameDetail() {
 
   async function fetchGame() {
     try {
-      const res = await fetch(`/api/games/${id}`);
+      const res = await fetch(`https://spectra-8r7j.onrender.com/api/games/${id}`);
       const data = await res.json();
 
       if (!data.success) {
@@ -76,7 +76,7 @@ const toggleFavorite = async () => {
   }
 
   try {
-    const res = await fetch(`http://localhost:8080/api/favorites/${game._id}`, {
+    const res = await fetch(`https://spectra-8r7j.onrender.com/api/favorites/${game._id}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -105,7 +105,7 @@ const toggleFavorite = async () => {
 
 async function handleLogout() {
   try {
-    const res = await fetch("/api/logout", {
+    const res = await fetch("https://spectra-8r7j.onrender.com/api/logout", {
       method: "POST",
       credentials: "include", // para enviar la cookie al backend
     });

@@ -56,10 +56,7 @@ function Home() {
           <nav className="nav">
             <Link to="/" className="nav a">Inicio</Link>
             <Link to="/games" className="nav a">Explorar Juegos</Link>
-            <Link to="/featured" className="nav a">Destacados de hoy</Link>
-            <Link to="/news" className="nav a">Noticias</Link>
-            <Link to="/about" className="nav a">Sobre nosotros</Link>
-            <Link to="/support" className="nav a">Soporte</Link>
+            <Link to="/favorites" className="nav a">Favoritos</Link>
           </nav>
         </div>
 
@@ -103,8 +100,7 @@ function Home() {
               {text}
               <span className="cursor">|</span>
             </p>
-            <Link to="/games" className="cta">
-	  Explorar Juegos</Link>
+            <Link to="/games" className="cta">Explorar Juegos</Link>
           </div>
         </section>
       </main>

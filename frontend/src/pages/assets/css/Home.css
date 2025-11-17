@@ -135,6 +135,7 @@ html, body, #root {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  transition: margin-left 0.3s ease;
 }
 
 /* =========================
@@ -148,6 +149,7 @@ html, body, #root {
   padding: 12px 16px;
   z-index: 10;
   position: relative;
+  flex-wrap: wrap;
 }
 
 .nav-left {
@@ -171,7 +173,8 @@ html, body, #root {
 
 .nav-center {
   flex: 1;
-  padding: 0 10px;
+  padding: 8px 10px;
+  min-width: 200px;
 }
 
 .search {
@@ -186,6 +189,7 @@ html, body, #root {
 .nav-right {
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .btn {
@@ -194,6 +198,7 @@ html, body, #root {
   border: none;
   font-weight: 600;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .btn.auth {
@@ -217,12 +222,12 @@ html, body, #root {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  padding: 0 20px;
 }
 
 .hero-bg {
   position: absolute;
   inset: 0;
-  /* 🔹 Imagen de fondo aleatoria (puedes cambiar esta URL) */
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.85)),
     url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1950&q=80");
   background-size: cover;
@@ -239,7 +244,7 @@ html, body, #root {
   z-index: 3;
   text-align: center;
   color: #fff;
-  max-width: 90%;
+  max-width: 100%;
 }
 
 .spectra-title {
@@ -286,7 +291,8 @@ html, body, #root {
 /* =========================
    RESPONSIVE
 ========================= */
-@media (min-width: 769px) {
+@media (min-width: 1024px) {
+  /* Sidebar always visible en escritorio grande */
   .sidebar {
     left: 0;
     position: relative;
@@ -301,31 +307,68 @@ html, body, #root {
   }
 
   .close-drawer, .overlay {
-    display: none;
+    display: none !important;
+  }
+
+  .hero {
+    position: relative;
+    left: -260px;
+    width: calc(100% + 260px);
+  }
+
+  .spectra-title {
+    font-size: 4rem;
+  }
+
+  .typing {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 1023px) and (min-width: 769px) {
+  /* Tablets */
+  .main {
+    margin-left: 0;
+  }
+
+  .hero {
+    min-height: 80vh;
+  }
+
+  .spectra-title {
+    font-size: 2.8rem;
+  }
+
+  .typing {
+    font-size: 1.1rem;
   }
 }
 
 @media (max-width: 768px) {
+  /* Móviles */
   .nav-center {
     display: none;
   }
 
   .hero {
-    min-height: 85vh;
+    min-height: 70vh;
+    padding: 0 10px;
   }
 
   .spectra-title {
-    font-size: 2.3rem;
+    font-size: 2rem;
   }
 
   .typing {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
-}/* Ajuste hero para escritorio */
-@media (min-width: 769px) {
-  .hero {
-    position: relative;
-    left: -260px;
-    width: calc(100% + 260px);
+
+  .btn {
+    padding: 6px 10px;
+    font-size: 0.9rem;
+  }
+
+  .nav-right {
+    gap: 6px;
   }
 }

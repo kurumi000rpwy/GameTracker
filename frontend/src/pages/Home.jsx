@@ -61,12 +61,6 @@ function Home() {
             <Link to="/about" className="nav a">Sobre nosotros</Link>
             <Link to="/support" className="nav a">Soporte</Link>
           </nav>
-
-          <div className="upgrade">
-            <p className="upgrade-title">Upgrade Version</p>
-            <p className="upgrade-desc">Upgrade now for game interest</p>
-            <button className="upgrade-btn">Upgrade Now</button>
-          </div>
         </div>
 
         <button className="close-drawer" onClick={() => setSidebarOpen(false)} aria-label="Cerrar menÃº">
@@ -95,7 +89,7 @@ function Home() {
           </div>
 
           <div className="nav-right">
-            <Link to="/login" className="btn login">Iniciar sesiÃn</Link>
+            <Link to="/login" className="btn login">Iniciar sesiï¿½n</Link>
             <Link to="/register" className="btn register">Registrarse</Link>
           </div>
         </header>

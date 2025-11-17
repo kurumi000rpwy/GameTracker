@@ -173,7 +173,7 @@ async function handleLogout() {
             <Link to="/favorites" className="nav a">Favoritos</Link>
           </nav>
 
-
+        </div>
         <button className="close-drawer" onClick={() => setSidebarOpen(false)}>
            ✖
         </button>
@@ -188,7 +188,7 @@ async function handleLogout() {
         <header className="navbar">
           <div className="nav-left">
             <button className="hamburger" onClick={() => setSidebarOpen(true)}>
-               ☰�
+               ☰�
             </button>
           </div>
 

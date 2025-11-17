@@ -76,7 +76,7 @@ export default function Games() {
             <Link to="/games" className="nav a">Explorar Juegos</Link>
             <Link to="/favorites" className="nav a">Favoritos</Link>
           </nav>
-
+        </div>
         <button className="close-drawer" onClick={() => setSidebarOpen(false)}>
           ✖
         </button>

@@ -134,7 +134,7 @@ async function handleLogout() {
   });
 
   try {
-    const res = await fetch("/api/reviews", {
+    const res = await fetch("https://spectra-8r7j.onrender.com/api/reviews", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

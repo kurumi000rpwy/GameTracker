@@ -21,7 +21,7 @@ export default function FavoriteGames() {
 
   async function loadFavorites(userId) {
     try {
-      const res = await fetch(`/api/user/${userId}/favorites`, {
+      const res = await fetch(`https://spectra-8r7j.onrender.com/api/user/${userId}/favorites`, {
         credentials: "include",
       });
 

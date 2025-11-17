@@ -42,7 +42,7 @@ const Register = () => {
     // Si no hay errores, enviar datos al backend
     if (Object.keys(newErrors).length === 0) {
       try {
-        const res = await fetch("/api/register", {
+        const res = await fetch("https://spectra-8r7j.onrender.com/api/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ username, email, password }),

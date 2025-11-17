@@ -23,7 +23,7 @@ export default function Adminz() {
 
   // Obtiene info de usuario
   useEffect(() => {
-    fetch("http://localhost:8080/api/userinfo", { credentials: "include" })
+    fetch("https://spectra-8r7j.onrender.com/api/userinfo", { credentials: "include" })
       .then((res) => res.json())
       .then((data) => {
         if (data.success) setUser(data.user);

@@ -25,7 +25,7 @@ export default function Login() {
     if (!validate()) return;
 
     try {
-      const res = await fetch("http://localhost:8080/api/login", {
+      const res = await fetch("https://spectra-8r7j.onrender.com/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
 	credentials: "include",

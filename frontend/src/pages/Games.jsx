@@ -21,7 +21,7 @@ export default function Games() {
   
   async function fetchGames(p) {
     try {
-      const res = await fetch(`/api/games?page=${p}`);
+      const res = await fetch(`https://spectra-8r7j.onrender.com/api/games?page=${p}`);
       const data = await res.json();
 
       if (!data.success) {

@@ -51,7 +51,7 @@ function AddGame() {
     }
 
     try {
-      const response = await fetch("http://localhost:8080/adminz/add/game", {
+      const response = await fetch("https://spectra-8r7j.onrender.com/adminz/add/game", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

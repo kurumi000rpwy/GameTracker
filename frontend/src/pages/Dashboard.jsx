@@ -8,7 +8,7 @@ function Home() {
 
   useEffect(() => {
     // Puedes hacer una petición al backend para validar el token si quieres
-    fetch("http://localhost:8080/api/userinfo", {
+    fetch("https://spectra-8r7j.onrender.com/api/userinfo", {
       credentials: "include",
     })
       .then((res) => res.json())

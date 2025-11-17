@@ -296,7 +296,7 @@ app.get("/api/games/:id", async (req, res) => {
   try {
     // Buscar el juego por título (sin importar mayúsculas/minúsculas)
     const game = await Game.findOne({
-      title: { $regex: new RegExp(`^${req.params.id}$`, "i") },
+      title: { $regex: new RegExp(`^${decodeURIComponent(req.params.id)}$`, "i") },
     })
       // Poblar las reseñas y los usuarios que las escribieron
       .populate({

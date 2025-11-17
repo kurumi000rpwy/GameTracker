@@ -7,7 +7,7 @@ export default function ProtectedAdminRoute({ children }) {
   useEffect(() => {
     const checkAdmin = async () => {
       try {
-        const res = await fetch("/api/adminz", {
+        const res = await fetch("https://spectra-8r7j.onrender.com/api/adminz", {
           credentials: "include", // importante si usas cookies
         });
         if (res.ok) {

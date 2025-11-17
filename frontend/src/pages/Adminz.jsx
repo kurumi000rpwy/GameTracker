@@ -9,7 +9,7 @@ export default function Adminz() {
 
   // Verifica acceso admin
   useEffect(() => {
-    fetch("/api/adminz", { credentials: "include" })
+    fetch("https://spectra-8r7j.onrender.com/api/adminz", { credentials: "include" })
       .then(async (res) => {
         if (!res.ok) {
           const data = await res.json();
@@ -49,25 +49,15 @@ export default function Adminz() {
           <nav className="nav">
             <Link to="/" className="nav a">Inicio</Link>
             <Link to="/adminz/add/game" className="nav a">Agregar Juegos</Link>
-            <Link to="/featured" className="nav a">Destacados</Link>
-            <Link to="/news" className="nav a">Noticias</Link>
-            <Link to="/about" className="nav a">Sobre nosotros</Link>
-            <Link to="/support" className="nav a">Soporte</Link>
+            <Link to="/games" className="nav a">Explorar Juegos</Link>
+            <Link to="/favorites" className="nav a">Favoritos</Link>
           </nav>
-
-          <div className="upgrade">
-            <p className="upgrade-title">Upgrade Version</p>
-            <p className="upgrade-desc">Upgrade now for game interest</p>
-            <button className="upgrade-btn">Upgrade Now</button>
-          </div>
-        </div>
-
         <button
           className="close-drawer"
           onClick={() => setSidebarOpen(false)}
           aria-label="Cerrar menú"
         >
-          �~\~U
+          ×
         </button>
       </aside>
 
@@ -103,7 +93,7 @@ export default function Adminz() {
           <div className="overlay-dark" aria-hidden="true" />
           <div className="hero-content">
             {user && <h2 className="spectra-title">Bienvenido al panel de control, {user.username}</h2>}
-            <Link to="/games" className="cta">Ver juegos</Link>
+            <Link to="/games" className="cta">Explorar juegos</Link>
           </div>
         </section>
       </main>

@@ -168,20 +168,11 @@ async function handleLogout() {
           </div>
 
           <nav className="nav">
-            <Link to="/">Inicio</Link>
-            <Link to="/games">Explorar Juegos</Link>
-            <Link to="/featured">Destacados</Link>
-            <Link to="/news">Noticias</Link>
-            <Link to="/about">Sobre Nosotros</Link>
-            <Link to="/support">Soporte</Link>
+            <Link to="/" className="nav a">Inicio</Link>
+            <Link to="/games" className="nav a">Explorar Juegos</Link>
+            <Link to="/favorites" className="nav a">Favoritos</Link>
           </nav>
 
-          <div className="upgrade">
-            <p className="upgrade-title">Upgrade Version</p>
-            <p className="upgrade-desc">Upgrade now for game interest</p>
-            <button className="upgrade-btn">Upgrade Now</button>
-          </div>
-        </div>
 
         <button className="close-drawer" onClick={() => setSidebarOpen(false)}>
            ✖

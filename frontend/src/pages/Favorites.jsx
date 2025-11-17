@@ -67,12 +67,9 @@ export default function FavoriteGames() {
           <h1 className="logo">SPECTRA</h1>
 
           <nav className="nav">
-            <Link to="/">Inicio</Link>
-            <Link to="/games">Explorar Juegos</Link>
-            <Link to="/favorites">Mis Favoritos</Link>
-            <Link to="/featured">Destacados</Link>
-            <Link to="/news">Noticias</Link>
-            <Link to="/about">Sobre Nosotros</Link>
+            <Link to="/" className="nav a">Inicio<Link>
+            <Link to="/games" className="nav a">Explorar Juegos</Link>
+            <Link to="/favorites" className="nav a">Favoritos</Link>
           </nav>
         </div>
 

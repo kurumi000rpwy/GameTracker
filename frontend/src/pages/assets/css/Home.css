@@ -132,10 +132,6 @@
     position: relative;
   }
 
-  .main {
-    margin-left: 260px; /* hero pegado al sidebar */
-  }
-
   .hamburger {
     display: none;
   }

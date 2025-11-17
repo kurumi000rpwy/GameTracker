@@ -80,11 +80,6 @@ function Home() {
               ☰
             </button>
           </div>
-
-          <div className="nav-center">
-            <input className="search" type="text" placeholder="Buscar..." aria-label="Buscar" />
-          </div>
-
           <div className="nav-right">
             <Link to="/login" className="btn login">Iniciar sesi�n</Link>
             <Link to="/register" className="btn register">Registrarse</Link>

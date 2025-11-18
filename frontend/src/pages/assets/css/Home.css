@@ -208,7 +208,7 @@ body {
 }
 
 .overlay-dark {
-  position: absolute;
+  position: relative;
   inset: 0;
   background: radial-gradient(circle at 30% 30%, rgba(0, 0, 0, 0.45), transparent 45%),
     radial-gradient(circle at 70% 70%, rgba(0, 0, 0, 0.35), transparent 40%);

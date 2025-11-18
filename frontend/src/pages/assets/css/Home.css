@@ -251,14 +251,14 @@ body {
   padding: clamp(56px, 10vh, 120px) clamp(24px, 6vw, 72px);
 }
 
-.hero-bg {
+/*.hero-bg {
   position: absolute;
   inset: 0;
   background: radial-gradient(ellipse at center, rgba(255, 0, 56, 0.15), rgba(5, 5, 7, 0.96)),
     linear-gradient(145deg, rgba(255, 0, 56, 0.18), transparent 55%);
   filter: blur(18px);
   z-index: 1;
-}
+}*/
 
 .overlay-dark {
   position: absolute;

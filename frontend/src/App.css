@@ -321,11 +321,4 @@ html, body, #root {
   .typing {
     font-size: 1rem;
   }
-}/* Ajuste hero para escritorio */
-@media (min-width: 769px) {
-  .hero {
-    position: relative;
-    left: -260px;
-    width: calc(100% + 260px);
-  }
 }

@@ -46,7 +46,7 @@ function AddGame() {
     e.preventDefault();
 
     if (!formData.title || !formData.description || !formData.img) {
-      setMessage("⚠️ Faltan campos obligatorios.");
+      setMessage("Faltan campos obligatorios.");
       return;
     }
 
@@ -60,7 +60,7 @@ function AddGame() {
       const data = await response.json();
 
       if (data.success) {
-        setMessage("✅ Juego agregado exitosamente.");
+        setMessage(" Juego agregado exitosamente.");
         setFormData({
           title: "",
           description: "",
@@ -70,11 +70,11 @@ function AddGame() {
           releaseDate: "",
         });
       } else {
-        setMessage("❌ " + (data.message || "Error al agregar el juego."));
+        setMessage((data.message || "Error al agregar el juego."));
       }
     } catch (error) {
       console.error(error);
-      setMessage("❌ Error de conexión con el servidor.");
+      setMessage("Error de conexión con el servidor.");
     }
   };
 
@@ -90,7 +90,7 @@ function AddGame() {
       </header>
 
       <main className="container">
-        <h1>Agregar un nuevo juego 🎮</h1>
+        <h1>Agregar un nuevo juego</h1>
 
         {message && <p className="message">{message}</p>}
 

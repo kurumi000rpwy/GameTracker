@@ -8,7 +8,7 @@ export default function Games() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [message, setMessage] = useState("");
-  const navigate = useNavigate(); // 👈 para redirigir
+  const navigate = useNavigate(); 
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export default function Games() {
     }
   }
 
-  // 👇 cuando se hace clic en una tarjeta, redirige a /games/:id
+  // cuando se hace clic en una tarjeta, redirige a /games/:id
   function handleGameClick(id) {
     navigate(`/games/${id}`);
   }
@@ -107,13 +107,13 @@ export default function Games() {
 
           <div className="nav-right">
 		{!user ? (
-              // 👇 Si NO hay usuario, muestra login y registro
+              // Si NO hay usuario, muestra login y registro
               <>
                 <Link to="/login" className="btn auth">Iniciar sesión</Link>
                 <Link to="/register" className="btn register">Registro</Link>
               </>
             ) : (
-              // 👇 Si hay usuario, muestra su nombre y botón de salir
+              // Si hay usuario, muestra su nombre y botón de salir
               <>
                 <span className="h3">Hola, {user.username}</span>
                 <button onClick={handleLogout} className="btn logout">Cerrar sesión</button>

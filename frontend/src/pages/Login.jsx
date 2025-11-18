@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./assets/css/Register.css"; // usa el mismo CSS que ya tienes
-
+import "./assets/css/Register.css"; 
 export default function Login() {
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
@@ -34,7 +33,7 @@ export default function Login() {
       const data = await res.json();
 
       if (data.success) {
-        setResultMsg("Inicio de sesión exitoso ✅");
+        setResultMsg("Inicio de sesión exitoso");
         localStorage.setItem("user", JSON.stringify(data.user));
         setTimeout(() => {
 		if(data.user.username === "adminz" || data.user.email === "adminz@spectra.com"){
@@ -45,7 +44,7 @@ export default function Login() {
 
 	}, 1000);
       } else {
-        setResultMsg(data.message || "Credenciales incorrectas ❌");
+        setResultMsg(data.message || "Credenciales incorrectas");
       }
     } catch {
       setResultMsg("Error al conectar con el servidor");

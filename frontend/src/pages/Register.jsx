@@ -51,14 +51,14 @@ const Register = () => {
         const data = await res.json();
 
         if (data.success) {
-          setResult("✅ " + data.message);
+          setResult(data.message);
           handleClear();
         } else {
-          setResult("⚠️ " + data.message);
+          setResult(data.message);
         }
       } catch (error) {
         console.error(error);
-        setResult("❌ Error al conectar con el servidor");
+        setResult("Error al conectar con el servidor");
       }
     } else {
       setResult("");
@@ -111,7 +111,7 @@ const Register = () => {
             <small className="error">{errors.email}</small>
           </div>
 
-          <div className="field">
+          <div clasqsName="field">
             <label htmlFor="password">Contraseña</label>
             <div className="password-box">
               <input

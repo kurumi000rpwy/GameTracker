@@ -188,7 +188,7 @@ async function handleLogout() {
         <header className="navbar">
           <div className="nav-left">
             <button className="hamburger" onClick={() => setSidebarOpen(true)}>
-               ☰�
+               ☰
             </button>
           </div>
 
@@ -239,13 +239,13 @@ async function handleLogout() {
 
                <div className="game-rating">{renderStars(game.rating)}</div>
                 <p className="game-genre">
-                  🎭 <strong>Género:</strong> {game.genre}
+                   <strong>Género:</strong> {game.genre}
                 </p>
                 <p className="game-platform">
-                  💻 <strong>Plataforma:</strong> {game.platform}
+                   <strong>Plataforma:</strong> {game.platform}
                 </p>
                 <p className="game-release">
-                  📅 <strong>Lanzamiento:</strong> {game.releaseDate}
+                   <strong>Lanzamiento:</strong> {game.releaseDate}
                 </p>
                 <p className="game-description">{game.description}</p>
               </div>

@@ -7,7 +7,6 @@ function Home() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // Puedes hacer una petición al backend para validar el token si quieres
     fetch("https://spectra-8r7j.onrender.com/api/userinfo", {
       credentials: "include",
     })
@@ -59,7 +58,6 @@ function Home() {
     return () => clearTimeout(timeout);
   }, [text, isDeleting, index, phrases]);
 
-  // Lock body scroll when sidebar open
   useEffect(() => {
     document.body.style.overflow = sidebarOpen ? "hidden" : "";
     return () => (document.body.style.overflow = "");
@@ -97,7 +95,7 @@ function Home() {
               onClick={() => setSidebarOpen(true)}
               aria-label="Abrir menú"
             >
-              �~X�
+              ☰
             </button>
           </div>
 

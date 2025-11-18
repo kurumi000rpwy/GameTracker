@@ -1,5 +1,5 @@
 #!/bin/bash
 git add . 
-git commit -m "corrigiendo css" 
+git commit -m "Limpiando el código" 
 git push 
 cd frontend && npm run deploy

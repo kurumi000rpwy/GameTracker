@@ -80,7 +80,7 @@ export default function Adminz() {
               onClick={() => setSidebarOpen(true)}
               aria-label="Abrir menú"
             >
-              �~X�
+              ☰
             </button>
           </div>
 

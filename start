@@ -1,3 +1,5 @@
 #!/bin/bash
-cd backend && npm start &
-cd frontend && npm run dev
+git add . 
+git commit -m "corrigiendo css" 
+git push 
+cd frontend && npm run deploy

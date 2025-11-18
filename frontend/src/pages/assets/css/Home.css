@@ -285,10 +285,7 @@ body {
     transform: none;
     flex-shrink: 0;
   }
-
-  .main {
-    margin-left: 10px;
-  }
+  
 
   .hamburger,
   .close-drawer,

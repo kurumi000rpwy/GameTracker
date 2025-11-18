@@ -1,13 +1,13 @@
 :root {
   color-scheme: dark;
-  --bg-900: #0d0f12;
+  --bg-900: #43043a;
   --bg-800: #14171c;
   --bg-700: #1b1f26;
   --text-100: #f5f7fa;
   --text-300: #d6d9df;
   --text-500: #a7adb9;
-  --accent: #e62121;
-  --accent-strong: #16caa9;
+  --accent: #ffe100;
+  --accent-strong: #e5ff00;
   --shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
 }
 
